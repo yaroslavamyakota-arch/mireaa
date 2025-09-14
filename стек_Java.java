@@ -1,38 +1,33 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        String input = scanner.nextLine();
-        
-        try {
-            // Преобразуем строку в список чисел
-            List<Integer> numbers = Arrays.stream(input.split("\\s+"))
-                    .filter(s -> !s.isEmpty())
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-
-            int minVal = numbers.stream().min(Integer::compare).get();
-            int maxVal = numbers.stream().max(Integer::compare).get();
-            
-            // Обрабатываем числа
-            List<Integer> result = numbers.stream()
-                    .flatMap(num -> {
-                        if (num == maxVal) {
-                            return Arrays.asList(minVal, num).stream();
-                        } else {
-                            return Arrays.asList(num).stream();
-                        }
-                    })
-                    .collect(Collectors.toList());
-            
-            System.out.println("Final stack: " + result.stream()
-                    .map(String::valueOf)
-                    .collect(Collectors.joining(" ")));
-        } catch (NumberFormatException e) {
-        } catch (NoSuchElementException e) {
+        // создаем переменную для чтения ввода с консоли
+        Scanner sc = new Scanner(System.in); 
+        // создаем список для хранения введенных чисел
+        List<Integer> nums = new ArrayList<>();
+        // читаем строку из консоли и разбиваем ее по пробелам на массив строк
+        for (String s : sc.nextLine().split(" ")) {
+            // Преобразуем каждую строку в число и добавляем в список
+            nums.add(Integer.parseInt(s));
         }
+        
+        // если список пуст, завершаем программу
+        if (nums.isEmpty()) return;
+        
+        int min = Collections.min(nums);
+        int max = Collections.max(nums);
+        
+        // создаем список с результатами
+        List<Integer> res = new ArrayList<>();
+        
+        // проходим по всем числам исходного списка
+        for (int n : nums) {
+            if (n == max) res.add(min);
+            res.add(n);
+        }
+        
+        // выводим результат
+        res.forEach(n -> System.out.print(n + " "));
     }
 }
